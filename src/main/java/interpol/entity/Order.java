@@ -2,6 +2,7 @@ package interpol.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "order")
@@ -12,14 +13,32 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "country_id")
-    private int country_id;
+    // Связь OneToOne на Country
+//    @Column(name = "country_id")
+//    private int country_id;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
 
-    @Column(name = "user_id")
-    private int user_id;
+    // Связь ManyToOne на User
+//    @Column(name = "user_id")
+//    private int user_id;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(name = "order_detail_id")
-    private int order_detail_id;
+    //Связь OneToOne на OrderDetail
+//    @Column(name = "order_detail_id")
+//    private int order_detail_id;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "order_detail_id", nullable = false)
+    private OrderDetail orderDetail;
+
+    @OneToOne(optional = false, mappedBy = "order")
+    public OrderResult orderResult;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
+    private Set<Info> infos;
 
     @Column(name = "date")
     private Date date;
@@ -38,28 +57,20 @@ public class Order {
         this.id = id;
     }
 
-    public int getCountry_id() {
-        return country_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setCountry_id(int country_id) {
-        this.country_id = country_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public OrderDetail getOrderDetail() {
+        return orderDetail;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
-    public int getOrder_detail_id() {
-        return order_detail_id;
-    }
-
-    public void setOrder_detail_id(int order_detail_id) {
-        this.order_detail_id = order_detail_id;
+    public void setOrderDetail(OrderDetail orderDetail) {
+        this.orderDetail = orderDetail;
     }
 
     public Date getDate() {
@@ -86,13 +97,39 @@ public class Order {
         this.confirm = confirm;
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public OrderResult getOrderResult() {
+        return orderResult;
+    }
+
+    public void setOrderResult(OrderResult orderResult) {
+        this.orderResult = orderResult;
+    }
+
+    public Set<Info> getInfos() {
+        return infos;
+    }
+
+    public void setInfos(Set<Info> infos) {
+        this.infos = infos;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", country_id=" + country_id +
-                ", user_id=" + user_id +
-                ", order_detail_id=" + order_detail_id +
+                ", country=" + country +
+                ", user=" + user +
+                ", orderDetail=" + orderDetail +
+                ", orderResult=" + orderResult +
+                ", infos=" + infos +
                 ", date=" + date +
                 ", reward='" + reward + '\'' +
                 ", confirm=" + confirm +

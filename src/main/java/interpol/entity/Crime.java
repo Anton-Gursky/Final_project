@@ -1,6 +1,7 @@
 package interpol.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "crime")
@@ -16,6 +17,9 @@ public class Crime {
 
     @Column (name = "punishment")
     private String punishment;
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "crimes")
+    private Set<OrderDetail> orderDetails;
 
     public int getId() {
         return id;
@@ -41,12 +45,21 @@ public class Crime {
         this.punishment = punishment;
     }
 
+    public Set<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(Set<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
     @Override
     public String toString() {
         return "Crime{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", punishment='" + punishment + '\'' +
+                ", orderDetails=" + orderDetails +
                 '}';
     }
 }

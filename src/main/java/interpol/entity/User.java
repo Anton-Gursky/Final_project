@@ -1,6 +1,7 @@
 package interpol.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -28,6 +29,17 @@ public class User {
 
     @Column(name = "role")
     private String role;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<Order> orders;
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
 
     public int getId() {
         return id;
@@ -95,6 +107,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", e_mail='" + e_mail + '\'' +
                 ", role='" + role + '\'' +
+                ", orders=" + orders +
                 '}';
     }
 }

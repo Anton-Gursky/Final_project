@@ -17,6 +17,17 @@ public class Country {
     @Column (name = "police_department")
     private String police_department;
 
+    @OneToOne(optional = false, mappedBy = "country")
+    public Order order;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
     public int getId() {
         return id;
     }
@@ -47,6 +58,7 @@ public class Country {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", police_department='" + police_department + '\'' +
+                ", order=" + order +
                 '}';
     }
 }

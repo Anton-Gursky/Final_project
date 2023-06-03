@@ -2,6 +2,7 @@ package interpol.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "order_detail")
@@ -27,8 +28,30 @@ public class OrderDetail {
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "order_detail_type")
-    private int order_detail_type;
+    // Связь ManyToOne на OrderType
+    //    @Column(name = "order_detail_type")
+    //    private int order_detail_type;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "order_detail_type", nullable = false)
+    private OrderType orderType;
+
+    @OneToOne(optional = false, mappedBy = "orderDetail")
+    public Order order;
+
+    @ManyToMany
+    @JoinTable(name = "criminal_crime_map",
+            joinColumns = @JoinColumn(name = "criminal_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "crime_id", referencedColumnName = "id")
+    )
+    private Set<Crime> crimes;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
     public int getId() {
         return id;
@@ -78,12 +101,20 @@ public class OrderDetail {
         this.date = date;
     }
 
-    public int getOrder_detail_type() {
-        return order_detail_type;
+    public OrderType getOrderType() {
+        return orderType;
     }
 
-    public void setOrder_detail_type(int order_detail_type) {
-        this.order_detail_type = order_detail_type;
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+    public Set<Crime> getCrimes() {
+        return crimes;
+    }
+
+    public void setCrimes(Set<Crime> crimes) {
+        this.crimes = crimes;
     }
 
     @Override
@@ -95,7 +126,9 @@ public class OrderDetail {
                 ", gender=" + gender +
                 ", age='" + age + '\'' +
                 ", date=" + date +
-                ", order_detail_type=" + order_detail_type +
+                ", orderType=" + orderType +
+                ", order=" + order +
+                ", crimes=" + crimes +
                 '}';
     }
 }
