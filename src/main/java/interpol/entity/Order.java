@@ -2,7 +2,8 @@ package interpol.entity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "order")
@@ -16,7 +17,7 @@ public class Order {
     // Связь OneToOne на Country
 //    @Column(name = "country_id")
 //    private int country_id;
-    @OneToOne(optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
@@ -38,7 +39,7 @@ public class Order {
     public OrderResult orderResult;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
-    private Set<Info> infos;
+    private List<Info> infos;
 
     @Column(name = "date")
     private Date date;
@@ -113,11 +114,11 @@ public class Order {
         this.orderResult = orderResult;
     }
 
-    public Set<Info> getInfos() {
+    public List<Info> getInfos() {
         return infos;
     }
 
-    public void setInfos(Set<Info> infos) {
+    public void setInfos(List<Info> infos) {
         this.infos = infos;
     }
 
@@ -134,5 +135,21 @@ public class Order {
                 ", reward='" + reward + '\'' +
                 ", confirm=" + confirm +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id && confirm == order.confirm && Objects.equals(country, order.country)
+                && Objects.equals(user, order.user) && Objects.equals(orderDetail, order.orderDetail)
+                && Objects.equals(orderResult, order.orderResult) && Objects.equals(infos, order.infos)
+                && Objects.equals(date, order.date) && Objects.equals(reward, order.reward);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, country, user, orderDetail, orderResult, infos, date, reward, confirm);
     }
 }

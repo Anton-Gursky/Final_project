@@ -1,31 +1,33 @@
 package interpol.entity;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "country")
 public class Country {
 
     @Id
-    @Column (name = "id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column (name = "name")
+    @Column(name = "name")
     private String name;
 
-    @Column (name = "police_department")
-    private String police_department;
+    @Column(name = "police_department")
+    private String policeDepartment;
 
-    @OneToOne(optional = false, mappedBy = "country")
-    public Order order;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "country")
+    private List<Order> orders;
 
-    public Order getOrder() {
-        return order;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public int getId() {
@@ -45,11 +47,11 @@ public class Country {
     }
 
     public String getPolice_department() {
-        return police_department;
+        return policeDepartment;
     }
 
     public void setPolice_department(String police_department) {
-        this.police_department = police_department;
+        this.policeDepartment = police_department;
     }
 
     @Override
@@ -57,8 +59,21 @@ public class Country {
         return "Country{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", police_department='" + police_department + '\'' +
-                ", order=" + order +
+                ", police_department='" + policeDepartment + '\'' +
+                ", order=" + orders +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return id == country.id && name.equals(country.name) && policeDepartment.equals(country.policeDepartment) && orders.equals(country.orders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, policeDepartment, orders);
     }
 }

@@ -1,6 +1,7 @@
 package interpol.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -49,5 +50,18 @@ public class OrderType {
                 ", type='" + type + '\'' +
                 ", orderDetails=" + orderDetails +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderType orderType = (OrderType) o;
+        return id == orderType.id && Objects.equals(type, orderType.type) && Objects.equals(orderDetails, orderType.orderDetails);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, orderDetails);
     }
 }

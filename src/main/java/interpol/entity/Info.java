@@ -1,6 +1,7 @@
 package interpol.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "info")
@@ -52,5 +53,18 @@ public class Info {
                 ", order=" + order +
                 ", info='" + info + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Info info1 = (Info) o;
+        return id == info1.id && Objects.equals(order, info1.order) && Objects.equals(info, info1.info);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, order, info);
     }
 }

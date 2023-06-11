@@ -1,6 +1,7 @@
 package interpol.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -13,10 +14,10 @@ public class User {
     private int id;
 
     @Column(name = "first_name")
-    private String first_name;
+    private String firstName;
 
     @Column(name = "last_name")
-    private String last_name;
+    private String lastName;
 
     @Column(name = "login")
     private String login;
@@ -50,19 +51,19 @@ public class User {
     }
 
     public String getFirst_name() {
-        return first_name;
+        return firstName;
     }
 
     public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+        this.firstName = first_name;
     }
 
     public String getLast_name() {
-        return last_name;
+        return lastName;
     }
 
     public void setLast_name(String last_name) {
-        this.last_name = last_name;
+        this.lastName = last_name;
     }
 
     public String getLogin() {
@@ -101,13 +102,29 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                ", first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", e_mail='" + e_mail + '\'' +
                 ", role='" + role + '\'' +
                 ", orders=" + orders +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName)
+                && Objects.equals(login, user.login) && Objects.equals(password, user.password)
+                && Objects.equals(e_mail, user.e_mail) && Objects.equals(role, user.role)
+                && Objects.equals(orders, user.orders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, login, password, e_mail, role, orders);
     }
 }

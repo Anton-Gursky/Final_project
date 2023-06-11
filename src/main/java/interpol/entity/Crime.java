@@ -1,6 +1,7 @@
 package interpol.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -18,8 +19,10 @@ public class Crime {
     @Column (name = "punishment")
     private String punishment;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "crimes")
-    private Set<OrderDetail> orderDetails;
+    // Переделанная связь ManyToMany между OrderDetail и Crime на 2 связи OneToMany между OrderDetail, Crime
+    // и промежуточной таблицей CriminalCrimeMap
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "crime")
+    private Set<Crime> crimes;
 
     public int getId() {
         return id;
@@ -45,12 +48,12 @@ public class Crime {
         this.punishment = punishment;
     }
 
-    public Set<OrderDetail> getOrderDetails() {
-        return orderDetails;
+    public Set<Crime> getCrimes() {
+        return crimes;
     }
 
-    public void setOrderDetails(Set<OrderDetail> orderDetails) {
-        this.orderDetails = orderDetails;
+    public void setCrimes(Set<Crime> crimes) {
+        this.crimes = crimes;
     }
 
     @Override
@@ -59,7 +62,20 @@ public class Crime {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", punishment='" + punishment + '\'' +
-                ", orderDetails=" + orderDetails +
+                ", crimes=" + crimes +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Crime crime = (Crime) o;
+        return id == crime.id && Objects.equals(name, crime.name) && Objects.equals(punishment, crime.punishment) && Objects.equals(crimes, crime.crimes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, punishment, crimes);
     }
 }

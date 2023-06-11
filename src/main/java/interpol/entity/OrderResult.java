@@ -2,6 +2,7 @@ package interpol.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "order_result")
@@ -89,5 +90,20 @@ public class OrderResult {
                 ", surname='" + surname + '\'' +
                 ", date=" + date +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderResult that = (OrderResult) o;
+        return id == that.id && Objects.equals(order, that.order) && Objects.equals(status, that.status)
+                && Objects.equals(name, that.name) && Objects.equals(surname, that.surname)
+                && Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, order, status, name, surname, date);
     }
 }

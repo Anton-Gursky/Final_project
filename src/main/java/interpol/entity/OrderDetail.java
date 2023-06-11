@@ -2,6 +2,7 @@ package interpol.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -38,11 +39,9 @@ public class OrderDetail {
     @OneToOne(optional = false, mappedBy = "orderDetail")
     public Order order;
 
-    @ManyToMany
-    @JoinTable(name = "criminal_crime_map",
-            joinColumns = @JoinColumn(name = "criminal_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "crime_id", referencedColumnName = "id")
-    )
+    // Переделанная связь ManyToMany между OrderDetail и Crime на 2 связи OneToMany между OrderDetail, Crime
+    // и промежуточной таблицей CriminalCrimeMap
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "orderDetail")
     private Set<Crime> crimes;
 
     public Order getOrder() {
@@ -130,5 +129,21 @@ public class OrderDetail {
                 ", order=" + order +
                 ", crimes=" + crimes +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderDetail that = (OrderDetail) o;
+        return id == that.id && gender == that.gender && Objects.equals(surname, that.surname)
+                && Objects.equals(name, that.name) && Objects.equals(age, that.age)
+                && Objects.equals(date, that.date) && Objects.equals(orderType, that.orderType)
+                && Objects.equals(order, that.order) && Objects.equals(crimes, that.crimes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, surname, name, gender, age, date, orderType, order, crimes);
     }
 }
