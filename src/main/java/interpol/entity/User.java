@@ -1,6 +1,9 @@
 package interpol.entity;
 
+import org.w3c.dom.ls.LSInput;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,13 +35,13 @@ public class User {
     private String role;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private Set<Order> orders;
+    private List<Order> orders;
 
-    public Set<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(Set<Order> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 

@@ -1,8 +1,8 @@
 package interpol.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "crime")
@@ -22,7 +22,7 @@ public class Crime {
     // Переделанная связь ManyToMany между OrderDetail и Crime на 2 связи OneToMany между OrderDetail, Crime
     // и промежуточной таблицей CriminalCrimeMap
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "crime")
-    private Set<Crime> crimes;
+    private List<CriminalCrimeMap> criminalCrimeMaps;
 
     public int getId() {
         return id;
@@ -48,12 +48,12 @@ public class Crime {
         this.punishment = punishment;
     }
 
-    public Set<Crime> getCrimes() {
-        return crimes;
+    public List<CriminalCrimeMap> getCriminalCrimeMaps() {
+        return criminalCrimeMaps;
     }
 
-    public void setCrimes(Set<Crime> crimes) {
-        this.crimes = crimes;
+    public void setCriminalCrimeMaps(List<CriminalCrimeMap> criminalCrimeMaps) {
+        this.criminalCrimeMaps = criminalCrimeMaps;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Crime {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", punishment='" + punishment + '\'' +
-                ", crimes=" + crimes +
+                ", criminalCrimeMaps=" + criminalCrimeMaps +
                 '}';
     }
 
@@ -71,11 +71,12 @@ public class Crime {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Crime crime = (Crime) o;
-        return id == crime.id && Objects.equals(name, crime.name) && Objects.equals(punishment, crime.punishment) && Objects.equals(crimes, crime.crimes);
+        return id == crime.id && Objects.equals(name, crime.name) && Objects.equals(punishment, crime.punishment) &&
+                Objects.equals(criminalCrimeMaps, crime.criminalCrimeMaps);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, punishment, crimes);
+        return Objects.hash(id, name, punishment, criminalCrimeMaps);
     }
 }

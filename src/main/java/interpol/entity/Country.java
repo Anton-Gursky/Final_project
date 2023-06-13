@@ -1,7 +1,6 @@
 package interpol.entity;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,17 +17,6 @@ public class Country {
 
     @Column(name = "police_department")
     private String policeDepartment;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "country")
-    private List<Order> orders;
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
 
     public int getId() {
         return id;
@@ -60,7 +48,6 @@ public class Country {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", police_department='" + policeDepartment + '\'' +
-                ", order=" + orders +
                 '}';
     }
 
@@ -69,11 +56,11 @@ public class Country {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return id == country.id && name.equals(country.name) && policeDepartment.equals(country.policeDepartment) && orders.equals(country.orders);
+        return id == country.id && Objects.equals(name, country.name) && Objects.equals(policeDepartment, country.policeDepartment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, policeDepartment, orders);
+        return Objects.hash(id, name, policeDepartment);
     }
 }

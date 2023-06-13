@@ -2,7 +2,6 @@ package interpol.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "order_type")
@@ -15,9 +14,6 @@ public class OrderType {
 
     @Column(name = "type")
     private String type;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "orderType")
-    private Set<OrderDetail> orderDetails;
 
     public int getId() {
         return id;
@@ -35,20 +31,11 @@ public class OrderType {
         this.type = type;
     }
 
-    public Set<OrderDetail> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(Set<OrderDetail> orderDetails) {
-        this.orderDetails = orderDetails;
-    }
-
     @Override
     public String toString() {
         return "OrderType{" +
                 "id=" + id +
                 ", type='" + type + '\'' +
-                ", orderDetails=" + orderDetails +
                 '}';
     }
 
@@ -57,11 +44,11 @@ public class OrderType {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderType orderType = (OrderType) o;
-        return id == orderType.id && Objects.equals(type, orderType.type) && Objects.equals(orderDetails, orderType.orderDetails);
+        return id == orderType.id && Objects.equals(type, orderType.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, orderDetails);
+        return Objects.hash(id, type);
     }
 }

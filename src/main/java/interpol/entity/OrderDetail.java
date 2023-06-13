@@ -2,8 +2,8 @@ package interpol.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "order_detail")
@@ -42,7 +42,7 @@ public class OrderDetail {
     // Переделанная связь ManyToMany между OrderDetail и Crime на 2 связи OneToMany между OrderDetail, Crime
     // и промежуточной таблицей CriminalCrimeMap
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "orderDetail")
-    private Set<Crime> crimes;
+    private List<CriminalCrimeMap> criminalCrimeMaps;
 
     public Order getOrder() {
         return order;
@@ -108,12 +108,12 @@ public class OrderDetail {
         this.orderType = orderType;
     }
 
-    public Set<Crime> getCrimes() {
-        return crimes;
+    public List<CriminalCrimeMap> getCriminalCrimeMaps() {
+        return criminalCrimeMaps;
     }
 
-    public void setCrimes(Set<Crime> crimes) {
-        this.crimes = crimes;
+    public void setCriminalCrimeMaps(List<CriminalCrimeMap> criminalCrimeMaps) {
+        this.criminalCrimeMaps = criminalCrimeMaps;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class OrderDetail {
                 ", date=" + date +
                 ", orderType=" + orderType +
                 ", order=" + order +
-                ", crimes=" + crimes +
+                ", criminalCrimeMaps=" + criminalCrimeMaps +
                 '}';
     }
 
@@ -136,14 +136,14 @@ public class OrderDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderDetail that = (OrderDetail) o;
-        return id == that.id && gender == that.gender && Objects.equals(surname, that.surname)
-                && Objects.equals(name, that.name) && Objects.equals(age, that.age)
-                && Objects.equals(date, that.date) && Objects.equals(orderType, that.orderType)
-                && Objects.equals(order, that.order) && Objects.equals(crimes, that.crimes);
+        return id == that.id && gender == that.gender && Objects.equals(surname, that.surname) &&
+                Objects.equals(name, that.name) && Objects.equals(age, that.age) &&
+                Objects.equals(date, that.date) && Objects.equals(orderType, that.orderType) &&
+                Objects.equals(order, that.order) && Objects.equals(criminalCrimeMaps, that.criminalCrimeMaps);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, surname, name, gender, age, date, orderType, order, crimes);
+        return Objects.hash(id, surname, name, gender, age, date, orderType, order, criminalCrimeMaps);
     }
 }
