@@ -36,8 +36,10 @@ public class OrderDetail {
     @JoinColumn(name = "order_detail_type", nullable = false)
     private OrderType orderType;
 
-    @OneToOne(optional = false, mappedBy = "orderDetail")
-    public Order order;
+    // Связь OneToOne на Order
+    @OneToOne(optional = false)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     // Переделанная связь ManyToMany между OrderDetail и Crime на 2 связи OneToMany между OrderDetail, Crime
     // и промежуточной таблицей CriminalCrimeMap

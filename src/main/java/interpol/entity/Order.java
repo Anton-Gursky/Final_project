@@ -31,9 +31,8 @@ public class Order {
     //Связь OneToOne на OrderDetail
 //    @Column(name = "order_detail_id")
 //    private int order_detail_id;
-    @OneToOne(optional = false)
-    @JoinColumn(name = "order_detail_id", nullable = false)
-    private OrderDetail orderDetail;
+    @OneToOne(optional = false, mappedBy = "order")
+    public OrderDetail orderDetail;
 
     @OneToOne(optional = false, mappedBy = "order")
     public OrderResult orderResult;
