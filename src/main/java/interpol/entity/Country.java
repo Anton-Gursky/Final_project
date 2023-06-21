@@ -1,21 +1,22 @@
 package interpol.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "country")
 public class Country {
 
     @Id
-    @Column (name = "id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column (name = "name")
+    @Column(name = "name")
     private String name;
 
-    @Column (name = "police_department")
-    private String police_department;
+    @Column(name = "police_department")
+    private String policeDepartment;
 
     public int getId() {
         return id;
@@ -34,11 +35,11 @@ public class Country {
     }
 
     public String getPolice_department() {
-        return police_department;
+        return policeDepartment;
     }
 
     public void setPolice_department(String police_department) {
-        this.police_department = police_department;
+        this.policeDepartment = police_department;
     }
 
     @Override
@@ -46,7 +47,20 @@ public class Country {
         return "Country{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", police_department='" + police_department + '\'' +
+                ", police_department='" + policeDepartment + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return id == country.id && Objects.equals(name, country.name) && Objects.equals(policeDepartment, country.policeDepartment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, policeDepartment);
     }
 }
